@@ -1,0 +1,15 @@
+{
+  "name": "filterjson",
+  "version": "1.0.0",
+  "description": "Filter JSON files as requested.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mkdirp": "^1.0.4"
+  }
+}
