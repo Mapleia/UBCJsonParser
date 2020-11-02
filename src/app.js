@@ -15,6 +15,9 @@ function filter_for_Undergrad(parsedJSON) {
         let type = typeof(key);
         if (type == "string") {
             if (parseInt(key) < 500) {
+                element.courses.forEach(course => {
+                    addTermsForCourse(course);
+                });
                 courseArr.push(element);
             }
         } else {
@@ -25,6 +28,35 @@ function filter_for_Undergrad(parsedJSON) {
     });
 
     return courseArr;
+}
+
+function addTermsForCourse(course) {
+    hasTerm1 = false;
+    hasTerm2 = false;
+    hasTerm12 = false;
+    course.sections.forEach(section => {
+    
+        if (section.term == "1") {
+            hasTerm1 = true;
+        }
+        if (section.term == "2") {
+            hasTerm2 = true;
+        }
+        if (section.term == "1-2") {
+            hasTerm12 = true;
+        }
+    });
+    let termArr = [];
+    if (hasTerm1) {
+        termArr.push("1");
+    }
+    if (hasTerm2) {
+        termArr.push("2");
+    }
+    if (hasTerm12) {
+        termArr.push("1-2");
+    }
+    course.term = termArr;
 }
 
 // REQUIRES: Parsed JSON file (parsedJSON)
