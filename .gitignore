@@ -1,7 +1,6 @@
 node_modules
 .vscode
-data/2020W/*
-data/2020W_TEST/*
-data/2020W_OLD/*
+data/*
 !data/2020W/2020W-ALL.json
 extrafn.js
+OLD_app.js
