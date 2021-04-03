@@ -1,6 +1,7 @@
 const jsonfile = require('jsonfile');
 const fs = require('fs');
 const _progress = require('cli-progress');
+const { exception } = require('console');
 
 class App {
     // Constructs the app.
@@ -116,7 +117,13 @@ class App {
         var hasTerm12 = false;
         
         let availableActivity = [];
-    
+        var intMe = parseInt(course.credits.substring(course.credits.length-1, course.credits.length));
+        if (intMe == NaN) {
+            throw "NaN found! " + course.course_name;
+        } else {
+            course.credits = intMe;
+        }
+        
         course.sections.forEach(section => {        
             if (section.term == "1") {
                 hasTerm1 = true;
@@ -165,7 +172,28 @@ class App {
         this.createFolders(deptArr);
         this.filterFormatWriteJSON(deptArr, parsedJSON);
     }
+
+    makeMasterFile() {
+        var parsedJSON = jsonfile.readFileSync(`${this.folder}/${this.year}/${this.allFileName}.json`);
+        var deptArr = this.filterDeptForUndergrad(parsedJSON);
+        var obj = {};
+        obj["DEPARTMENT"] = deptArr;
+        var courses = {};
+
+        parsedJSON.forEach(dept => {
+            var arr = [];
+
+            dept.courses.forEach(course => arr.push(course.course_name));
+            courses[dept.code] = arr;
+        });
+
+        obj["COURSES"] = courses;
+        let file = `${this.folder}/${this.year}/masterfile${this.year}.json`;;
+        jsonfile.writeFileSync(file, obj, { spaces: 2 });
+        console.log(obj);
+    }
 }
 
 const app = new App('../data', "2020W", "2020W-ALL", false);
-app.main();
+//app.main();
+app.makeMasterFile();
